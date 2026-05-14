@@ -164,3 +164,13 @@ func Init(logger webunlock.Logger, c codec.Codec, port int) {
 		}()
 	})
 }
+
+// ResetForTest resets all global wallet state so that tests can call Init
+// multiple times independently. Only for use in tests.
+func ResetForTest() {
+	mu.Lock()
+	defer mu.Unlock()
+	passCache = ""
+	passReady = nil
+	initOnce = sync.Once{}
+}
